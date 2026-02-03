@@ -1,0 +1,126 @@
+# Copa de la Domiciliación 2026 - Instrucciones Actualizadas
+
+## 🎯 Solución al Error de Carga
+
+He creado una nueva versión que NO requiere servidor web y funciona directamente en cualquier navegador.
+
+## 📦 Archivos Incluidos
+
+1. **copa_domiciliacion_embebido.html** - Aplicación principal (¡USAR ESTE!)
+2. **datos.csv** - Tu archivo de datos
+3. **actualizar_copa.py** - Script para actualizar automáticamente
+
+## 🚀 Opción 1: Actualización Manual (Más Simple)
+
+### Pasos:
+1. Abre **copa_domiciliacion_embebido.html** con un editor de texto (Notepad, VSCode, etc.)
+
+2. Busca esta sección (líneas 377-388 aproximadamente):
+```javascript
+const datosAsesores = [
+    {nombre: "Juan Pérez", domiciliaciones: 15},
+    {nombre: "María González", domiciliaciones: 12},
+    // ... más asesores
+];
+```
+
+3. Edita los datos directamente:
+   - Cambia nombres
+   - Cambia números de domiciliaciones
+   - Agrega o elimina líneas según necesites
+
+4. Guarda el archivo
+
+5. Abre el archivo HTML en cualquier navegador (Chrome, Firefox, Edge, Safari)
+
+### Ejemplo de cómo agregar un asesor:
+```javascript
+const datosAsesores = [
+    {nombre: "Juan Pérez", domiciliaciones: 15},
+    {nombre: "Nuevo Asesor", domiciliaciones: 10},  // ← Agregar aquí
+    // ...
+];
+```
+
+## ⚡ Opción 2: Actualización Automática con Python (Más Rápida)
+
+Si tienes Python instalado, puedes actualizar automáticamente desde tu CSV:
+
+### Pasos:
+1. Asegúrate de tener estos 3 archivos en la misma carpeta:
+   - copa_domiciliacion_embebido.html
+   - datos.csv
+   - actualizar_copa.py
+
+2. Edita **datos.csv** con tus datos:
+```csv
+Nombre,Domiciliaciones
+Juan Pérez,15
+María González,12
+Carlos López,8
+```
+
+3. Ejecuta el script:
+   - Windows: Doble clic en `actualizar_copa.py`
+   - O desde terminal: `python actualizar_copa.py`
+
+4. El script actualizará automáticamente el archivo HTML
+
+5. Abre el HTML en tu navegador
+
+## 📊 Formato del CSV
+
+```csv
+Nombre,Domiciliaciones
+Asesor 1,15
+Asesor 2,12
+Asesor 3,8
+```
+
+**Importante:**
+- Primera línea debe ser: `Nombre,Domiciliaciones`
+- No dejes espacios al inicio/final de los nombres
+- Los números deben ser enteros (sin decimales)
+
+## 🎨 Categorías Automáticas
+
+El sistema categoriza automáticamente según domiciliaciones:
+- **12 o más** → Delanteros 🔴 (Compiten por pantallas)
+- **8 a 11** → Mediocampistas 🔵 (Compiten por playeras)
+- **4 a 7** → Defensas 🟡 (Compiten por balones)
+- **1 a 3** → Reservas ⚪ (En banca)
+
+## 🔄 Para Compartir con Asesores
+
+1. Actualiza los datos como prefieras (manual o con Python)
+2. Comparte solo el archivo **copa_domiciliacion_embebido.html**
+3. Los asesores solo necesitan abrirlo en su navegador
+4. NO pueden editar los datos (solo tú puedes)
+
+## ✅ Ventajas de Esta Versión
+
+- ✓ No requiere servidor web
+- ✓ Funciona en cualquier navegador
+- ✓ Los asesores no pueden modificar datos
+- ✓ Fácil de actualizar
+- ✓ Fácil de compartir (un solo archivo)
+
+## ⚠️ Notas Importantes
+
+- Los asesores NO VEN el código fuente fácilmente (aunque técnicamente podrían acceder)
+- Si necesitas mayor seguridad, considera subir a un servidor web
+- El archivo HTML se puede enviar por email, WhatsApp, etc.
+
+## 🆘 ¿Problemas?
+
+**El archivo no abre:**
+- Asegúrate de que tenga extensión .html
+- Haz clic derecho → Abrir con → Chrome/Firefox/Edge
+
+**Los datos no se actualizan:**
+- Borra el caché del navegador (Ctrl + F5)
+- Verifica que editaste la sección correcta del código
+
+**Python no funciona:**
+- Verifica que Python esté instalado: `python --version`
+- Instala Python desde: https://www.python.org/downloads/

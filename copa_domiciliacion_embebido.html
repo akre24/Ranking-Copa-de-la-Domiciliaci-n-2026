@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copa de la Domiciliación 2026 - Campo de Fútbol</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+        }
+
+        .field-container {
+            background: linear-gradient(90deg, #2d5016 0%, #3a6b1f 50%, #2d5016 100%);
+            border-radius: 15px;
+            padding: 40px;
+            position: relative;
+            min-height: 800px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .field-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .center-circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150px;
+            height: 150px;
+            border: 3px solid rgba(255,255,255,0.5);
+            border-radius: 50%;
+        }
+
+        .center-line {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 3px;
+            height: 100%;
+            background: rgba(255,255,255,0.5);
+        }
+
+        .penalty-area {
+            position: absolute;
+            width: 200px;
+            height: 250px;
+            border: 3px solid rgba(255,255,255,0.5);
+        }
+
+        .penalty-area.top {
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-top: none;
+        }
+
+        .penalty-area.bottom {
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-bottom: none;
+        }
+
+        .formation-zone {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .zone-title {
+            text-align: center;
+            color: white;
+            font-size: 1.5em;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+        }
+
+        .players-row {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px 0;
+        }
+
+        .player-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            width: 180px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+
+        .player-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+        }
+
+        .player-jersey {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 2em;
+            font-weight: bold;
+            color: white;
+            position: relative;
+        }
+
+        .delantero .player-jersey {
+            background: linear-gradient(135deg, #ff0844 0%, #ffb199 100%);
+        }
+
+        .mediocampista .player-jersey {
+            background: linear-gradient(135deg, #4776e6 0%, #8e54e9 100%);
+        }
+
+        .defensa .player-jersey {
+            background: linear-gradient(135deg, #f2994a 0%, #f2c94c 100%);
+        }
+
+        .reserva .player-jersey {
+            background: linear-gradient(135deg, #757575 0%, #a8a8a8 100%);
+        }
+
+        .player-name {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .player-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 2px solid #eee;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #2a5298;
+        }
+
+        .stat-label {
+            font-size: 0.8em;
+            color: #666;
+        }
+
+        .prize-indicator {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            background: rgba(255,255,255,0.95);
+            z-index: 10;
+        }
+
+        .legend {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .legend h3 {
+            margin-bottom: 15px;
+            color: #2a5298;
+        }
+
+        .legend-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .legend-color {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .stats-summary {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-box-value {
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .stat-box-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚽ La Copa de la Domiciliación 2026 ⚽</h1>
+            <p style="font-size: 1.2em;">Alineación de Asesores</p>
+        </header>
+
+        <div class="stats-summary">
+            <h3 style="color: #2a5298; margin-bottom: 10px;">📊 Resumen del Equipo</h3>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-box-value" id="totalAsesores">0</div>
+                    <div class="stat-box-label">Total Asesores</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-box-value" id="totalDomiciliaciones">0</div>
+                    <div class="stat-box-label">Total Domiciliaciones</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-box-value" id="delanteros">0</div>
+                    <div class="stat-box-label">⭐ Delanteros (12+)</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-box-value" id="mediocampistas">0</div>
+                    <div class="stat-box-label">💪 Mediocampistas (8-11)</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-box-value" id="defensas">0</div>
+                    <div class="stat-box-label">🛡️ Defensas (4-7)</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-box-value" id="reservas">0</div>
+                    <div class="stat-box-label">📋 Reservas (1-3)</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="field-container">
+            <div class="field-lines">
+                <div class="center-line"></div>
+                <div class="center-circle"></div>
+                <div class="penalty-area top"></div>
+                <div class="penalty-area bottom"></div>
+            </div>
+
+            <div id="fieldContent"></div>
+        </div>
+
+        <div class="legend">
+            <h3>📋 Leyenda de Posiciones y Premios</h3>
+            <div class="legend-items">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(135deg, #ff0844 0%, #ffb199 100%);"></div>
+                    <div>
+                        <strong>Delanteros (12+)</strong><br>
+                        <span style="font-size: 0.9em;">Compiten por 📺 2 Pantallas 40"</span>
+                    </div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(135deg, #4776e6 0%, #8e54e9 100%);"></div>
+                    <div>
+                        <strong>Mediocampistas (8-11)</strong><br>
+                        <span style="font-size: 0.9em;">Compiten por 👕 3 Playeras Oficiales</span>
+                    </div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(135deg, #f2994a 0%, #f2c94c 100%);"></div>
+                    <div>
+                        <strong>Defensas (4-7)</strong><br>
+                        <span style="font-size: 0.9em;">Compiten por ⚽ 5 Balones Training</span>
+                    </div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(135deg, #757575 0%, #a8a8a8 100%);"></div>
+                    <div>
+                        <strong>Reservas (1-3)</strong><br>
+                        <span style="font-size: 0.9em;">En banca, calentando ⏱️</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // DATOS DE ASESORES - EDITA ESTA SECCIÓN
+        // ============================================
+        const datosAsesores = [
+            {nombre: "Juan Pérez", domiciliaciones: 15},
+            {nombre: "María González", domiciliaciones: 12},
+            {nombre: "Carlos Rodríguez", domiciliaciones: 10},
+            {nombre: "Ana Martínez", domiciliaciones: 9},
+            {nombre: "Luis Hernández", domiciliaciones: 8},
+            {nombre: "Carmen López", domiciliaciones: 7},
+            {nombre: "Roberto Sánchez", domiciliaciones: 6},
+            {nombre: "Patricia Ramírez", domiciliaciones: 5},
+            {nombre: "Miguel Torres", domiciliaciones: 4},
+            {nombre: "Laura Flores", domiciliaciones: 3},
+            {nombre: "José Morales", domiciliaciones: 2},
+            {nombre: "Diana Castro", domiciliaciones: 1}
+        ];
+        // ============================================
+        // FIN DE DATOS - NO EDITES DEBAJO DE ESTA LÍNEA
+        // ============================================
+
+        window.addEventListener('load', function() {
+            processData();
+        });
+
+        function processData() {
+            const asesores = datosAsesores.map(asesor => {
+                const categoria = getCategoriaYPremio(asesor.domiciliaciones);
+                return {
+                    nombre: asesor.nombre,
+                    domiciliaciones: asesor.domiciliaciones,
+                    categoria: categoria.categoria,
+                    premio: categoria.premio
+                };
+            });
+
+            // Sort by domiciliaciones (highest first)
+            asesores.sort((a, b) => b.domiciliaciones - a.domiciliaciones);
+
+            displayAsesores(asesores);
+            updateStats(asesores);
+        }
+
+        function getCategoriaYPremio(domiciliaciones) {
+            if (domiciliaciones >= 12) {
+                return { categoria: 'delantero', premio: '📺' };
+            } else if (domiciliaciones >= 8) {
+                return { categoria: 'mediocampista', premio: '👕' };
+            } else if (domiciliaciones >= 4) {
+                return { categoria: 'defensa', premio: '⚽' };
+            } else {
+                return { categoria: 'reserva', premio: '' };
+            }
+        }
+
+        function displayAsesores(asesores) {
+            const delanteros = asesores.filter(a => a.categoria === 'delantero');
+            const mediocampistas = asesores.filter(a => a.categoria === 'mediocampista');
+            const defensas = asesores.filter(a => a.categoria === 'defensa');
+            const reservas = asesores.filter(a => a.categoria === 'reserva');
+
+            let html = '';
+
+            // Delanteros
+            if (delanteros.length > 0) {
+                html += createZone('⭐ DELANTEROS - Zona de Pantallas', delanteros);
+            }
+
+            // Mediocampistas
+            if (mediocampistas.length > 0) {
+                html += createZone('💪 MEDIOCAMPISTAS - Zona de Playeras', mediocampistas);
+            }
+
+            // Defensas
+            if (defensas.length > 0) {
+                html += createZone('🛡️ DEFENSAS - Zona de Balones', defensas);
+            }
+
+            // Reservas
+            if (reservas.length > 0) {
+                html += createZone('📋 BANCA - Reservas', reservas);
+            }
+
+            document.getElementById('fieldContent').innerHTML = html;
+        }
+
+        function createZone(title, players) {
+            let html = `
+                <div class="formation-zone">
+                    <div class="zone-title">${title}</div>
+                    <div class="players-row">
+            `;
+
+            players.forEach(player => {
+                html += `
+                    <div class="player-card ${player.categoria}">
+                        ${player.premio ? `<div class="prize-indicator">${player.premio}</div>` : ''}
+                        <div class="player-jersey">
+                            ${player.domiciliaciones}
+                        </div>
+                        <div class="player-name">${player.nombre}</div>
+                        <div class="player-stats">
+                            <div class="stat">
+                                <div class="stat-value">${player.domiciliaciones}</div>
+                                <div class="stat-label">Domiciliaciones</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `
+                    </div>
+                </div>
+            `;
+
+            return html;
+        }
+
+        function updateStats(asesores) {
+            const delanteros = asesores.filter(a => a.categoria === 'delantero').length;
+            const mediocampistas = asesores.filter(a => a.categoria === 'mediocampista').length;
+            const defensas = asesores.filter(a => a.categoria === 'defensa').length;
+            const reservas = asesores.filter(a => a.categoria === 'reserva').length;
+            const totalDom = asesores.reduce((sum, a) => sum + a.domiciliaciones, 0);
+
+            document.getElementById('totalAsesores').textContent = asesores.length;
+            document.getElementById('totalDomiciliaciones').textContent = totalDom;
+            document.getElementById('delanteros').textContent = delanteros;
+            document.getElementById('mediocampistas').textContent = mediocampistas;
+            document.getElementById('defensas').textContent = defensas;
+            document.getElementById('reservas').textContent = reservas;
+        }
+    </script>
+</body>
+</html>
